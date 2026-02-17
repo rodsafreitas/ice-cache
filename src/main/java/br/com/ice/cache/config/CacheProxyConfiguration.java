@@ -1,6 +1,7 @@
 package br.com.ice.cache.config;
 
 import br.com.ice.cache.annotation.Cache;
+import br.com.ice.cache.cache.CacheManager;
 import br.com.ice.cache.inteceptor.CacheInteceptor;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -11,6 +12,16 @@ import java.util.stream.Stream;
 
 @Configuration
 public class CacheProxyConfiguration {
+
+    @Bean
+    public CacheManager cacheManager() {
+        return new CacheManager();
+    }
+
+    @Bean
+    public CacheInteceptor cacheInteceptor(CacheManager cacheManager) {
+        return new CacheInteceptor(cacheManager);
+    }
 
     @Bean
     public BeanPostProcessor cacheableProxyPostProcessor(CacheInteceptor cacheInteceptor) {
